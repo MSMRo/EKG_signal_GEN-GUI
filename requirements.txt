@@ -58,7 +58,6 @@ pyparsing==3.2.3
 python-dateutil==2.9.0.post0
 pytz==2025.2
 PyWavelets==1.8.0
-pywin32==308
 pyzmq==26.2.0
 referencing==0.36.2
 requests==2.32.3
