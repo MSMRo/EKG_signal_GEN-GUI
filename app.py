@@ -169,21 +169,21 @@ if st.session_state.ecg_df is not None:
     st.plotly_chart(fig_cwt, use_container_width=True)
 
     # — 9) Empaquetar todo en un ZIP y ofrecer descarga —
-    zip_buffer = io.BytesIO()
-    with zipfile.ZipFile(zip_buffer, mode="w") as zf:
-        # Señal CSV
-        csv_bytes = df.to_csv(index=False).encode("utf-8")
-        zf.writestr("ecg_data.csv", csv_bytes)
-        # Imágenes PNG
-        zf.writestr("ecg_plot.png",  fig_ecg.to_image(format="png"))
-        zf.writestr("fft_plot.png",  fig_fft.to_image(format="png"))
-        zf.writestr("stft_plot.png", fig_stft.to_image(format="png"))
-    zip_buffer.seek(0)
+    #zip_buffer = io.BytesIO()
+    #with zipfile.ZipFile(zip_buffer, mode="w") as zf:
+    #    # Señal CSV
+    #    csv_bytes = df.to_csv(index=False).encode("utf-8")
+    #    zf.writestr("ecg_data.csv", csv_bytes)
+    #    # Imágenes PNG
+    #    zf.writestr("ecg_plot.png",  fig_ecg.to_image(format="png"))
+    #    zf.writestr("fft_plot.png",  fig_fft.to_image(format="png"))
+    #    zf.writestr("stft_plot.png", fig_stft.to_image(format="png"))
+    #zip_buffer.seek(0)
 
-    st.markdown("### Download all results")
-    st.download_button(
-        label="Download ECG data + plots (ZIP)",
-        data=zip_buffer,
-        file_name="ecg_results.zip",
-        mime="application/zip"
-    )
+    #st.markdown("### Download all results")
+    #st.download_button(
+    #    label="Download ECG data + plots (ZIP)",
+    #    data=zip_buffer,
+    #    file_name="ecg_results.zip",
+    #    mime="application/zip"
+    #)
