@@ -33,7 +33,7 @@ st.sidebar.markdown(
 st.sidebar.markdown("---")
 st.sidebar.markdown("## CREDITS")
 st.sidebar.markdown(
-    "- Desarrollo: Ing. Moises Meza\n"
+    "- Desarrollo: Ing. Moises Meza Rodriguez\n"
     "- Biblioteca: NeuroKit2, Numpy, PyWavelets\n"
     "- Visualización: Plotly\n"
 )
