@@ -11,7 +11,7 @@ from scipy import signal
 import pywt
 
 # — 1) Configuración de la página en modo ancho —
-st.set_page_config(page_title="ECG Synthetic Signal Generator", layout="wide")
+st.set_page_config(page_title="EcgSinGen: A ECG Synthetic Signal Generator", layout="wide")
 
 # — 2) Sidebar: logo, ABOUT, CREDITS —
 #logo_path = "logo.png"
