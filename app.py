@@ -8,6 +8,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from scipy import signal
+from scipy.io import wavfile
 import pywt
 
 # — 1) Configuración de la página en modo ancho —
@@ -121,6 +122,19 @@ if st.session_state.ecg_df is not None:
         data=csv2,
         file_name="ecg_data.csv",
         mime="text/csv",
+    )
+
+    # — Botón de descarga WAV ——————————————————————————————————————————————————
+    wav_buffer = io.BytesIO()
+    # Normalizar la señal para WAV (convertir a int16)
+    x_normalized = np.int16(x / np.max(np.abs(x)) * 32767)
+    wavfile.write(wav_buffer, sampling_rate, x_normalized)
+    wav_buffer.seek(0)
+    st.download_button(
+        label="Download signal as WAV",
+        data=wav_buffer,
+        file_name="ecg_signal.wav",
+        mime="audio/wav",
     )
 
     # — 8.2) Plot FFT —
