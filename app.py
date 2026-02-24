@@ -62,6 +62,10 @@ bpm             = st.sidebar.slider("BPM (40–140)",                  40,  140,
 bpm_noise_amp   = st.sidebar.slider("BPM Noise σ (bpm)",             0.0, 10.0,   1.0, step=0.5)
 white_noise_amp = st.sidebar.slider("White Noise (mV)",              0.0,  0.5,   0.04, step=0.01)
 pl_noise_amp    = st.sidebar.slider("50 Hz Noise (mV)",              0.0,  1.0,   0.01, step=0.01)
+
+# — 3.5) Nombre personalizado para descarga WAV —
+wav_filename    = st.sidebar.text_input("WAV File Name", value="ecg_signal", placeholder="Ingresa el nombre sin extensión")
+
 #generate        = st.sidebar.button("Generate ECG")
 
 # — 5) Inicializar session_state para la señal —
@@ -133,7 +137,7 @@ if st.session_state.ecg_df is not None:
     st.download_button(
         label="Download signal as WAV",
         data=wav_buffer,
-        file_name="ecg_signal.wav",
+        file_name=f"{wav_filename}.wav",
         mime="audio/wav",
     )
 
