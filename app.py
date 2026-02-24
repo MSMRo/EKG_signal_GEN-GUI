@@ -114,7 +114,7 @@ if st.session_state.ecg_df is not None:
         yaxis_title="Voltage (mV)",
         margin=dict(l=40, r=40, t=40, b=40)
     )
-    st.plotly_chart(fig_ecg, use_container_width=True)
+    st.plotly_chart(fig_ecg, width='stretch')
     # — Botón de descarga CSV ———————————————————————————————
     #df = pd.DataFrame({
     #    "Time (s)":      t,
@@ -153,7 +153,7 @@ if st.session_state.ecg_df is not None:
         yaxis_title="Amplitude",
         margin=dict(l=40, r=40, t=40, b=40)
     )
-    st.plotly_chart(fig_fft, use_container_width=True)
+    st.plotly_chart(fig_fft, width='stretch')
 
     # — 8.3) Plot STFT —
     f_stft, t_stft, Zxx = signal.stft(x, sampling_rate, nperseg=128)
@@ -169,7 +169,7 @@ if st.session_state.ecg_df is not None:
         yaxis_title="Frequency (Hz)",
         margin=dict(l=40, r=40, t=40, b=40)
     )
-    st.plotly_chart(fig_stft, use_container_width=True)
+    st.plotly_chart(fig_stft, width='stretch')
 
     # — 8.4) Plot CWT/Morlet —
     scales        = np.arange(1, 128)
@@ -186,7 +186,7 @@ if st.session_state.ecg_df is not None:
         yaxis_title="Frequency (Hz)",
         margin=dict(l=40, r=40, t=40, b=40)
     )
-    st.plotly_chart(fig_cwt, use_container_width=True)
+    st.plotly_chart(fig_cwt, width='stretch')
 
     # — 9) Empaquetar todo en un ZIP y ofrecer descarga —
     #zip_buffer = io.BytesIO()
