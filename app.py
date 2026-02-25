@@ -97,7 +97,7 @@ if generate:
     })
 
 # — 7) Título en la parte principal —
-st.title("ECG Synthetic Signal Generator")
+st.title("EcgSinGen: A ECG Synthetic Signal Generator")
 
 # — 8) Mostrar gráficos y ZIP de descarga si hay datos generados —
 if st.session_state.ecg_df is not None:
