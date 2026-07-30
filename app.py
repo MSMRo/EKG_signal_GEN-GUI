@@ -11,6 +11,67 @@ from scipy import signal
 from scipy.io import wavfile
 import pywt
 
+# — Función para generar archivo Arduino Library (.h) —
+def generate_arduino_header(ecg_data, sampling_rate):
+    """
+    Genera contenido de archivo signal.h para Arduino.
+    
+    Args:
+        ecg_data: array con voltaje en mV
+        sampling_rate: frecuencia de muestreo en Hz
+    
+    Returns:
+        str con contenido del archivo signal.h
+    """
+    # Calcular máximo número de muestras (4 segundos)
+    max_samples = min(len(ecg_data), sampling_rate * 4)
+    ecg_subset = ecg_data[:max_samples]
+    
+    # Normalizar a rango 0-255 usando Min-Max
+    min_val = np.min(ecg_subset)
+    max_val = np.max(ecg_subset)
+    
+    # Evitar división por cero
+    if max_val == min_val:
+        normalized = np.full_like(ecg_subset, 127, dtype=float)
+    else:
+        normalized = ((ecg_subset - min_val) / (max_val - min_val)) * 255
+    
+    # Convertir a uint8 con redondeo correcto
+    signal_uint8 = np.round(normalized).astype(np.uint8)
+    
+    # Construir contenido del archivo
+    lines = [
+        "#ifndef SIGNAL_H",
+        "#define SIGNAL_H",
+        "",
+        "#include <Arduino.h>",
+        "#include <avr/pgmspace.h>",
+        "",
+        f"const uint16_t SIGNAL_LENGTH = {len(signal_uint8)};",
+        "",
+        "const uint8_t ecgSignal[SIGNAL_LENGTH] PROGMEM = {",
+    ]
+    
+    # Agregar valores con saltos de línea cada 16 valores
+    for i, val in enumerate(signal_uint8):
+        if i % 16 == 0:
+            lines.append("")
+        # No agregar coma después del último elemento
+        if i < len(signal_uint8) - 1:
+            lines[-1] += f"{val},"
+        else:
+            lines[-1] += f"{val}"
+    
+    lines.extend([
+        "",
+        "};",
+        "",
+        "#endif"
+    ])
+    
+    return "\n".join(lines)
+
 # — 1) Configuración de la página en modo ancho —
 st.set_page_config(page_title="EcgSinGen: A ECG Synthetic Signal Generator", layout="wide")
 
@@ -37,6 +98,7 @@ st.sidebar.markdown(
     "- Desarrollo: Ing. Moises Meza Rodriguez\n"
     "- Biblioteca: NeuroKit2, Numpy, PyWavelets\n"
     "- Visualización: Plotly\n"
+    "- Libreria con Arduino: https://github.com/MSMRo/HighSpeedPWMDAC/tree/main\n"
 )
 st.sidebar.markdown("---")
 
@@ -47,7 +109,7 @@ sampling_rate = st.sidebar.number_input(
     "Sampling Rate (Hz)",
     min_value=50,
     max_value=2000,
-    value=250,
+    value=1000,
     step=1,
     help="Frecuencia de muestreo para la simulación y los análisis"
 )
@@ -139,6 +201,15 @@ if st.session_state.ecg_df is not None:
         data=wav_buffer,
         file_name=f"{wav_filename}.wav",
         mime="audio/wav",
+    )
+
+    # — Botón de descarga Arduino Header (.h) ——————————————————————————————
+    h_content = generate_arduino_header(x, sampling_rate)
+    st.download_button(
+        label="Download Arduino Library (.h)",
+        data=h_content,
+        file_name="signal.h",
+        mime="text/plain",
     )
 
     # — 8.2) Plot FFT —
